@@ -1,0 +1,8 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=214
+
+lh-vim-lib is a collection of miscellanous VimL functions. 
+An exhaustive list of the functions provided can be found at: http://code.google.com/p/lh-vim/wiki/lhVimLib
+
+Requirements: Vim 7+ (this plugin is actually exclusivelly made of autoload plugins)
+
+Note: vimscript # 214 used to be menu-map which is now part of lh-vim-lib.
