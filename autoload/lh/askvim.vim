@@ -1,11 +1,11 @@
 "=============================================================================
-" $Id: askvim.vim 12 2008-02-14 00:06:48Z luc.hermitte $
+" $Id: askvim.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " File:		autoload/lh/askvim.vim                                    {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://hermitte.free.fr/vim/>
 " Version:	2.0.5
 " Created:	17th Apr 2007
-" Last Update:	$Date: 2008-02-14 01:06:48 +0100 (jeu., 14 fÃ©vr. 2008) $ (17th Apr 2007)
+" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (17th Apr 2007)
 "------------------------------------------------------------------------
 " Description:	
 " 	Defines functions that asks vim what its is relinquish to tell us

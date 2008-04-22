@@ -1,11 +1,11 @@
 "=============================================================================
-" $Id: command.vim 12 2008-02-14 00:06:48Z luc.hermitte $
+" $Id: command.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " File:		command.vim                                           {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://hermitte.free.fr/vim/>
 " Version:	2.0.5
 " Created:	08th Jan 2007
-" Last Update:	$Date: 2008-02-14 01:06:48 +0100 (jeu., 14 fÃ©vr. 2008) $ (08th Jan 2007)
+" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (08th Jan 2007)
 "------------------------------------------------------------------------
 " Description:	
 " 	Helpers to define commands that:

@@ -1,11 +1,11 @@
 "=============================================================================
-" $Id: test-menu-map.vim 6 2008-02-13 01:56:50Z luc.hermitte $
+" $Id: test-menu-map.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " File:		test-menu-map.vim                                           {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://hermitte.free.fr/vim/>
 " Version:	2.0.0
 " Created:	05th Dec 2006
-" Last Update:	$Date: 2008-02-13 02:56:50 +0100 (mer., 13 fÃ©vr. 2008) $
+" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $
 "------------------------------------------------------------------------
 " Description:	Tests for lh-vim-lib . lh#menu#
 " 

@@ -1,11 +1,11 @@
 "=============================================================================
-" $Id: option.vim 13 2008-02-14 00:07:51Z luc.hermitte $
+" $Id: option.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " File:		autoload/lh/option.vim                                    {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://hermitte.free.fr/vim/>
 " Version:	2.0.5
 " Created:	24th Jul 2004
-" Last Update:	$Date: 2008-02-14 01:07:51 +0100 (jeu., 14 fÃ©vr. 2008) $ (07th Oct 2006)
+" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (07th Oct 2006)
 "------------------------------------------------------------------------
 " Description:
 " 	Defines the global function lh#option#get().

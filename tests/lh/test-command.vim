@@ -1,4 +1,4 @@
-" $Id: test-command.vim 6 2008-02-13 01:56:50Z luc.hermitte $
+" $Id: test-command.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " Tests for lh-vim-lib . lh#command
 
 " FindFilter(filter):                            Helper {{{3

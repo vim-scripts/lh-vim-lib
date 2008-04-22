@@ -1,5 +1,5 @@
 "===========================================================================
-" $Id: menu-map.vim 6 2008-02-13 01:56:50Z luc.hermitte $
+" $Id: menu-map.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " File:		macros/menu-map.vim
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 " 		<URL:http://hermitte.free.fr/vim/>
@@ -7,7 +7,7 @@
 " Purpose:	Define functions to build mappings and menus at the same time
 "
 " Version:	2.0.0
-" Last Update:  $Date: 2008-02-13 02:56:50 +0100 (mer., 13 fÃ©vr. 2008) $ (02nd Dec 2006)
+" Last Update:  $Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (02nd Dec 2006)
 "
 " Last Changes: {{{
 " 	Version 2.0.0:

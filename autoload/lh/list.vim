@@ -1,11 +1,11 @@
 "=============================================================================
-" $Id: list.vim 42 2008-02-21 23:25:02Z luc.hermitte $
+" $Id: list.vim 101 2008-04-23 00:22:05Z luc.hermitte $
 " File:		autoload/lh/list.vim                                      {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://hermitte.free.fr/vim/>
 " Version:	2.0.7
 " Created:	17th Apr 2007
-" Last Update:	$Date: 2008-02-22 00:25:02 +0100 (ven., 22 fÃ©vr. 2008) $ (17th Apr 2007)
+" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (17th Apr 2007)
 "------------------------------------------------------------------------
 " Description:	
 " 	Defines functions related to |Lists|
