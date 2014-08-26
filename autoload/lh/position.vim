@@ -1,21 +1,24 @@
 "=============================================================================
-" $Id: position.vim 12 2008-02-14 00:06:48Z luc.hermitte $
-" File:		position.vim                                           {{{1
+" $Id$
+" File:		autoload/lh/position.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.0.5
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.0.0
 " Created:	05th Sep 2007
-" Last Update:	$Date: 2008-02-14 01:06:48 +0100 (jeu., 14 fÃƒÂ©vr. 2008) $ (05th Sep 2007)
+" Last Update:	$Date$ (05th Sep 2007)
 "------------------------------------------------------------------------
-" Description:	Â«descriptionÂ»
+" Description:	«description»
 " 
 "------------------------------------------------------------------------
 " Installation:
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
-" History:	Â«historyÂ»
+" History:	«history»
 " 	v1.0.0:
 " 		Creation
+"       v3.0.0: GPLv3
 " TODO:		
 " }}}1
 "=============================================================================
@@ -25,12 +28,29 @@
 let s:cpo_save=&cpo
 set cpo&vim
 "------------------------------------------------------------------------
-" Functions {{{1
+" ## Functions {{{1
+" # Debug {{{2
+function! lh#position#verbose(level)
+  let s:verbose = a:level
+endfunction
 
-" Function: lh#position#IsBefore {{{2
+function! s:Verbose(expr)
+  if exists('s:verbose') && s:verbose
+    echomsg a:expr
+  endif
+endfunction
+
+function! lh#position#debug(expr)
+  return eval(a:expr)
+endfunction
+
+
+"------------------------------------------------------------------------
+" # Public {{{2
+" Function: lh#position#is_before {{{3
 " @param[in] positions as those returned from |getpos()|
 " @return whether lhs_pos is before rhs_pos
-function! lh#position#IsBefore(lhs_pos, rhs_pos)
+function! lh#position#is_before(lhs_pos, rhs_pos)
   if a:lhs_pos[0] != a:rhs_pos[0]
     throw "Positions from incompatible buffers can't be ordered"
   endif
@@ -42,20 +62,29 @@ function! lh#position#IsBefore(lhs_pos, rhs_pos)
 	\ : (a:lhs_pos[1] < a:rhs_pos[1])
   return before
 endfunction
+function! lh#position#IsBefore(lhs_pos, rhs_pos)
+  return lh#position#is_before(a:lhs_pos, a:rhs_pos)
+endfunction
 
 
-" Function: lh#position#CharAtMark {{{2
+" Function: lh#position#char_at_mark {{{3
 " @return the character at a given mark (|mark|)
-function! lh#position#CharAtMark(mark)
+function! lh#position#char_at_mark(mark)
   let c = getline(a:mark)[col(a:mark)-1]
   return c
 endfunction
+function! lh#position#CharAtMark(mark)
+return lh#position#char_at_mark(a:mark)
+endfunction
 
-" Function: lh#position#CharAtPos {{{2
+" Function: lh#position#char_at_pos {{{3
 " @return the character at a given position (|getpos()|)
-function! lh#position#CharAtPos(pos)
-  let c = getline(a:pos[1])[col(a:pos[2])-1]
+function! lh#position#char_at_pos(pos)
+  let c = getline(a:pos[1])[(a:pos[2])-1]
   return c
+endfunction
+function! lh#position#CharAtPos(pos)
+  return  lh#position#char_at_pos(a:pos)
 endfunction
 
 

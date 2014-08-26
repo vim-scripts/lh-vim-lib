@@ -1,11 +1,13 @@
 "=============================================================================
-" $Id: command.vim 101 2008-04-23 00:22:05Z luc.hermitte $
-" File:		command.vim                                           {{{1
+" $Id$
+" File:		autoload/lh/command.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.0.5
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.0.0
 " Created:	08th Jan 2007
-" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (08th Jan 2007)
+" Last Update:	$Date$ (08th Jan 2007)
 "------------------------------------------------------------------------
 " Description:	
 " 	Helpers to define commands that:
@@ -17,9 +19,9 @@
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
 " History:	
-" 	v2.0.0:
-" 		Code move from other plugins
-" TODO:		Â«missing featuresÂ»
+"       v3.0.0: GPLv3
+" 	v2.0.0: Code moved from other plugins
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 
@@ -27,8 +29,24 @@
 "=============================================================================
 let s:cpo_save=&cpo
 set cpo&vim
+
+" ## Debug {{{1
+function! lh#command#verbose(level)
+  let s:verbose = a:level
+endfunction
+
+function! s:Verbose(expr)
+  if exists('s:verbose') && s:verbose
+    echomsg a:expr
+  endif
+endfunction
+
+function! lh#command#debug(expr)
+  return eval(a:expr)
+endfunction
+
 "------------------------------------------------------------------------
-" Functions {{{1
+" ## Functions {{{1
 
 " Tool functions {{{2
 " Function: lh#command#Fargs2String(aList) {{{3
@@ -53,7 +71,7 @@ function! lh#command#Fargs2String(aList)
 endfunction
 
 "------------------------------------------------------------------------
-" Experimental Functions {{{1
+" ## Experimental Functions {{{1
 
 " Internal functions        {{{2
 " Function: s:SaveData({Data})                             {{{3
@@ -76,7 +94,7 @@ function! s:SaveData(Data)
 endfunction
 
 " BTWComplete(ArgLead, CmdLine, CursorPos):      Auto-complete {{{3
-function! lh#command#Complete(ArgLead, CmdLine, CursorPos)
+function! lh#command#complete(ArgLead, CmdLine, CursorPos)
   let tmp = substitute(a:CmdLine, '\s*\S*', 'Z', 'g')
   let pos = strlen(tmp)
   if 0
@@ -129,7 +147,7 @@ function! s:BTW(command, ...)
   elseif 'removelocal'  == a:command | call s:RemoveFilter('b', a:1)
   elseif 'rebuild'      == a:command " wait for s:ReconstructToolsChain()
   elseif 'echo'         == a:command | exe "echo s:".a:1
-    " echo s:{a:f1} ## don't support Â«echo s:f('foo')Â»
+    " echo s:{a:f1} ## don't support «echo s:f('foo')»
   elseif 'reloadPlugin' == a:command
     let g:force_reload_BuildToolsWrapper = 1
     let g:BTW_BTW_in_use = 1
@@ -194,7 +212,7 @@ function! s:execute(definition, ...)
   endtry
 endfunction
 
-function! lh#command#New(definition)
+function! lh#command#new(definition)
   let cmd_name = a:definition.name
   " Save the definition as an internal script variable
   let id = s:SaveData(a:definition)

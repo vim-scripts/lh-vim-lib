@@ -1,11 +1,13 @@
 "=============================================================================
-" $Id: test-askmenu.vim 6 2008-02-13 01:56:50Z luc.hermitte $
-" File:		test-buffer-menu.vim                                      {{{1
+" $Id$
+" File:		tests/test-buffer-menu.vim                                {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.0.0
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.0.0
 " Created:	18th Apr 2007
-" Last Update:	$Date: 2008-02-13 02:56:50 +0100 (mer., 13 fÃƒÂ©vr. 2008) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 " Description:	
 " 	Test units for buffermenu.vim
@@ -14,16 +16,15 @@
 " Installation:	Requires:
 " 	(*) Vim 7.0+
 " 	(*) vim_units.vim v0.2/1.0?
-" 	    Vimscript # Â«???Â»
-" 	(*) lh-vim-lib (lh#ask#Menu)
-" 	    <http://hermitte.free.fr/vim/ressources/lh-vim-lib.tar.gz>
+" 	    Vimscript # «???»
+" 	(*) lh-vim-lib (lh#ask#menu)
 "
 " User Manual:
 " 	Source this file.
 "
 " History:	
 " (*) 17th Apr 2007: First version 
-" TODO:		Â«missing featuresÂ»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 
@@ -50,7 +51,7 @@ function! TestAskMenu()
 endfunction
 
 function! s:CheckInMode(mode, name)
-  let g:menu = lh#askvim#Menu('LH-Tests.Menu.ask.'.a:name, a:mode)
+  let g:menu = lh#askvim#menu('LH-Tests.Menu.ask.'.a:name, a:mode)
   let g:name = a:name
   " VUAssert 55 Equals g:menu.name     g:name     "Name mismatch"
   " VUAssert 56 Equals g:menu.priority '42.40.10' "Priority mismatch"
