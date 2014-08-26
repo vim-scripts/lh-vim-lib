@@ -1,25 +1,18 @@
 "=============================================================================
 " $Id$
-" File:         autoload/lh/env.vim                               {{{1
+" File:         autoload/lh/let.vim                               {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:      3.0.0
-" Created:      19th Jul 2010
+" Version:      3.1.6
+" Created:      10th Sep 2012
 " Last Update:  $Date$
 "------------------------------------------------------------------------
 " Description:
-"       Functions related to environment (variables)
+"       Defines a command :LetIfUndef that sets a variable if undefined
 " 
 "------------------------------------------------------------------------
-" Installation:
-"       Drop this file into {rtp}/autoload/lh
-"       Requires Vim7+
-" History:      
-" 	v2.2.1: First Version
-"       v3.0.0: GPLv3
-" TODO:         «missing features»
 " }}}1
 "=============================================================================
 
@@ -28,14 +21,14 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-let s:k_version = 300
-function! lh#env#version()
+let s:k_version = 1
+function! lh#let#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = 0
-function! lh#env#verbose(...)
+function! lh#let#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -46,29 +39,37 @@ function! s:Verbose(expr)
   endif
 endfunction
 
-function! lh#env#debug(expr)
+function! lh#let#debug(expr)
   return eval(a:expr)
 endfunction
 
 
 "------------------------------------------------------------------------
 " ## Exported functions {{{1
-function! lh#env#expand_all(string)
-  let res = ''
-  let tail = a:string
-  while !empty(tail)
-    let [ all, head, var, tail; dummy ] = matchlist(tail, '\(.\{-}\)\%(${\(.\{-}\)}\)\=\(.*\)')
-    if empty(var)
-      let res .= tail
-      break
+" Function: lh#let#if_undef(var, value) {{{3
+function! lh#let#if_undef(var, value) abort
+  try 
+    let [all, dict, key ; dummy] = matchlist(a:var, '^\(.\{-}\)\%(\.\([^.]\+\)\)\=$')
+    " echomsg a:var." --> dict=".dict." --- key=".key
+    if !empty(key)
+      " Dictionaries
+      let dict2 = lh#let#if_undef(dict, string({}))
+      if !has_key(dict2, key)
+        let dict2[key] = type(a:value) == type(function('has')) ? (a:value) : eval(a:value)
+      endif
+      return dict2[key]
     else
-      let res .= head
-      let val = eval('$'.var)
-      let res .= val
+      " other variables
+      if !exists(a:var)
+        let {a:var} = type(a:value) == type(function('has')) ? (a:value) : eval(a:value)
+      endif
+      return {a:var}
     endif
-  endwhile
-  return res
+  catch /.*/
+    echoerr "Cannot set ".a:var." to ".string(a:value).": ".(v:exception .' @ '. v:throwpoint)
+  endtry
 endfunction
+
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
 

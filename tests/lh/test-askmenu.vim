@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: test-askmenu.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		tests/test-buffer-menu.vim                                {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,7 +7,7 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	18th Apr 2007
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 " Description:	
 " 	Test units for buffermenu.vim
@@ -16,7 +16,7 @@
 " Installation:	Requires:
 " 	(*) Vim 7.0+
 " 	(*) vim_units.vim v0.2/1.0?
-" 	    Vimscript # Â«???Â»
+" 	    Vimscript # «???»
 " 	(*) lh-vim-lib (lh#ask#menu)
 "
 " User Manual:
@@ -24,7 +24,7 @@
 "
 " History:	
 " (*) 17th Apr 2007: First version 
-" TODO:		Â«missing featuresÂ»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 

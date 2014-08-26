@@ -1,25 +1,23 @@
 "=============================================================================
 " $Id$
-" File:         autoload/lh/float.vim                             {{{1
+" File:         autoload/lh/map.vim                               {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:      3.0.0
-" Created:      16th Nov 2010
+" Version:      3.1.8
+" Created:      01st Mar 2013
 " Last Update:  $Date$
 "------------------------------------------------------------------------
 " Description:
-"       Defines functions related to |expr-float| numbers
+"       Functions to handle mappings
 " 
 "------------------------------------------------------------------------
 " Installation:
 "       Drop this file into {rtp}/autoload/lh
 "       Requires Vim7+
-" History:     
-"       v2.0.0: first version
-"       v3.0.0: GPLv3
-" TODO:
+" History:      «history»
+" TODO:         «missing features»
 " }}}1
 "=============================================================================
 
@@ -28,14 +26,14 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-let s:k_version = 300
-function! lh#float#version()
+let s:k_version = 318
+function! lh#map#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = 0
-function! lh#float#verbose(...)
+function! lh#map#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -46,71 +44,39 @@ function! s:Verbose(expr)
   endif
 endfunction
 
-function! lh#float#debug(expr)
+function! lh#map#debug(expr)
   return eval(a:expr)
 endfunction
 
 
 "------------------------------------------------------------------------
 " ## Exported functions {{{1
-
-" # lh#float#min(list) {{{2
-function! lh#float#min(list)
-  let am = lh#float#arg_min(a:list)
-  return a:list[am]
+" Function: lh#map#_build_command(mapping_definition) {{{3
+" @param mapping_definition is a dictionary witch the same keys than the ones
+" filled by maparg()
+function! lh#map#_build_command(mapping_definition)
+  let cmd = a:mapping_definition.mode
+  if has_key(a:mapping_definition, 'noremap') && a:mapping_definition.noremap
+    let cmd .= 'nore'
+  endif
+  let cmd .= 'map'
+  let specifiers = ['silent', 'expr', 'buffer']
+  for specifier in specifiers
+    if has_key(a:mapping_definition, specifier) && a:mapping_definition[specifier]
+      let cmd .= ' <'.specifier.'>'
+    endif
+  endfor
+  let cmd .= ' '.(a:mapping_definition.lhs)
+  let rhs = substitute(a:mapping_definition.rhs, '<SID>', "\<SNR>".(a:mapping_definition.sid).'_', 'g')
+  let cmd .= ' '.rhs
+  return cmd
 endfunction
 
-function! lh#float#arg_min(list)
-  if empty(a:list) | return -1 | endif
-  let m = type(a:list[0]) == type(0.0) ? a:list[0] : str2float(a:list[0])
-  let p = 0
-  let i = 1
-  while i != len(a:list)
-    let e = a:list[i]
-    if type(e) != type(0.0) |
-      let v = str2float(e)
-    else
-      let v = e
-    endif
-    if v < m
-      let m = v
-      let p = i
-    endif
-    let i += 1
-  endwhile
-  return p
+" Function: lh#map#define(mapping_definition) {{{3
+function! lh#map#define(mapping_definition)
+  let cmd = lh#map#_build_command(a:mapping_definition)
+  silent exe cmd
 endfunction
-
-
-" # lh#float#max(list) {{{2
-function! lh#float#max(list)
-  let am = lh#float#arg_max(a:list)
-  return a:list[am]
-endfunction
-
-function! lh#float#arg_max(list)
-  if empty(a:list) | return -1 | endif
-  let m = type(a:list[0]) == type(0.0) ? a:list[0] : str2float(a:list[0])
-  let p = 0
-  let i = 1
-  while i != len(a:list)
-    let e = a:list[i]
-    if type(e) != type(0.0) |
-      let v = str2float(e)
-    else
-      let v = e
-    endif
-    if v > m
-      let m = v
-      let p = i
-    endif
-    let i += 1
-  endwhile
-  return p
-endfunction
-
-
-
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
 

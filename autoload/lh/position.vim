@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: position.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/position.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,15 +7,15 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	05th Sep 2007
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (05th Sep 2007)
+" Last Update:	$Date$ (05th Sep 2007)
 "------------------------------------------------------------------------
-" Description:	Â«descriptionÂ»
+" Description:	«description»
 " 
 "------------------------------------------------------------------------
 " Installation:
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
-" History:	Â«historyÂ»
+" History:	«history»
 " 	v1.0.0:
 " 		Creation
 "       v3.0.0: GPLv3

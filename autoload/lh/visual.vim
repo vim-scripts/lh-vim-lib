@@ -18,7 +18,7 @@
 "       v3.0.0: GPLv3
 " 	v2.2.5: lh#visual#cut()
 " 	v2.0.6: First appearance
-" TODO:		Â«missing featuresÂ»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 

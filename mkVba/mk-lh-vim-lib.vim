@@ -1,14 +1,14 @@
 "=============================================================================
-" $Id: mk-lh-vim-lib.vim 606 2012-05-31 17:09:46Z luc.hermitte@gmail.com $
+" $Id$
 " File:		mkVba/mk-lh-lib.vim
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:	3.1.1
-let s:version = '3.1.1'
+" Version:	3.2.1
+let s:version = '3.2.1'
 " Created:	06th Nov 2007
-" Last Update:	$Date: 2012-05-31 19:09:46 +0200 (jeu 31 mai 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 cd <sfile>:p:h
 try 
@@ -33,7 +33,9 @@ autoload/lh/float.vim
 autoload/lh/function.vim
 autoload/lh/graph/tsort.vim
 autoload/lh/icomplete.vim
+autoload/lh/let.vim
 autoload/lh/list.vim
+autoload/lh/map.vim
 autoload/lh/menu.vim
 autoload/lh/option.vim
 autoload/lh/path.vim

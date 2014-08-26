@@ -1,11 +1,11 @@
 "=============================================================================
-" $Id: path.vim 606 2012-05-31 17:09:46Z luc.hermitte@gmail.com $
+" $Id$
 " File:		autoload/lh/path.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:	3.1.1
+" Version:	3.2.1
 " Created:	23rd Jan 2007
 " Last Update:	$Date
 "------------------------------------------------------------------------
@@ -54,6 +54,30 @@
 "       true by default.
 "       v 3.1.1
 "       (*) lh#path#strip_start() shall support very big lists of dirnames now.
+"       v 3.1.4
+"       (*) Force to display numerous choices from lh#path#select_one()
+"       vertically
+"       v 3.1.9
+"       (*) lh#path#is_in() that resolves symbolic links to tell wheither a
+"       file is within a directory
+"       (*) lh#path#readlink() that resolves symbolic links (where readlink is
+"       available)
+"       v 3.1.11
+"       (*) lh#path#strip_start() can find the best match in the middle of a
+"       sequence. This fixes a bug in Mu-Template: the filetype of
+"       template-files wasn't always correctly working.
+"       v 3.1.12
+"       (*) New function: lh#path#add_if_exists()
+"       v 3.1.14
+"       (*) New functions: lh#path#split() and lh#path#join()
+"       (*) lh#path#common() fixed as matchstr('^\zs\(.*\)\ze.\{-}@@\1.*$')
+"           doesn't work as expected
+"       v 3.1.17
+"       (*) Fix lh#start#strip_start() to work under windows
+"       v 3.2.0
+"       (*) New function lh#path#find_in_parents() used in local_vimrc
+"       v 3.2.1
+"       (*) Bug fix: no more infinite recursion possible
 " TODO:
 "       (*) Decide what #depth('../../bar') shall return
 "       (*) Fix #simplify('../../bar')
@@ -69,13 +93,15 @@ set cpo&vim
 "=============================================================================
 " ## Functions {{{1
 " # Version {{{2
-let s:k_version = 310
+let s:k_version = 3201
 function! lh#path#version()
   return s:k_version
 endfunction
 
 " # Debug {{{2
-let s:verbose = 0
+if !exists('s:verbose')
+  let s:verbose = 0
+endif
 function! lh#path#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
@@ -111,24 +137,55 @@ function! lh#path#Simplify(pathname)
   return lh#path#simplify(a:pathname)
 endfunction
 
+" Function: lh#path#split(pathname) {{{3
+" Split pathname parts: "/home/me/foo/bar" -> [ "home", "me", "foo", "bar" ]
+function! lh#path#split(pathname)
+  let parts = split(a:pathname, '[/\\]')
+  return parts
+endfunction
+
+" Function: lh#path#join(pathparts, {path_separator}) {{{3
+function! lh#path#join(pathparts, ...)
+  let sep
+        \ = (a:0) == 0                       ? '/'
+        \ : type(a:1)==type(0) && (a:1) == 0 ? '/'
+        \ : (a:1) == 1                       ? '\'
+        \ : (a:1) =~ 'shellslash\|ssl'       ? (&ssl ? '\' : '/')
+        \ :                                    (a:1)
+  return join(a:pathparts, sep)
+endfunction
+
 " Function: lh#path#common({pathnames}) {{{3
 " Find the common leading path between all pathnames
 function! lh#path#common(pathnames)
   " assert(len(pathnames)) > 1
   let common = a:pathnames[0]
+  let lCommon = lh#path#split(common)
   let i = 1
   while i < len(a:pathnames)
     let fcrt = a:pathnames[i]
-    " pathnames should not contain @
+    " Can't make it work => split paths, and test each subdir manually...
     " let common = matchstr(common.'@@'.fcrt, '^\zs\(.*[/\\]\)\ze.\{-}@@\1.*$')
-    let common = matchstr(common.'@@'.fcrt, '^\zs\(.*\>\)\ze.\{-}@@\1\>.*$')
-    if strlen(common) == 0
-      " No need to further checks
+    " let common = matchstr(common.'@@'.fcrt, '^\zs\(.*\>\)\ze.\{-}@@\1\>.*$')
+    let lFcrt = lh#path#split(fcrt)
+    let Mcrt = len(lFcrt)
+    let Mcom = len(lCommon)
+    let p = 0
+    while 1
+      if p == Mcom
+        break
+      elseif p==Mcrt || lCommon[p] != lFcrt[p]
+        call remove(lCommon, p, -1)
+        break
+      endif
+      let p += 1
+    endwhile
+    if len(lCommon) == 0 " No need to further checks
       break
     endif
     let i += 1
   endwhile
-  return common
+  return join(lCommon, '/')
 endfunction
 
 " Function: lh#path#strip_common({pathnames}) {{{3
@@ -141,9 +198,10 @@ function! lh#path#strip_common(pathnames)
   if l == 0
     return a:pathnames
   else
-  let pathnames = a:pathnames
-  call map(pathnames, 'strpart(v:val, '.l.')' )
-  return pathnames
+    let pathnames = a:pathnames
+    call map(pathnames, 'strpart(v:val, '.l.')' )
+    call map(pathnames, 'substitute(v:val, "^/", "", "")' )
+    return pathnames
   endif
 endfunction
 function! lh#path#StripCommon(pathnames)
@@ -179,7 +237,13 @@ function! lh#path#select_one(pathnames, prompt)
     let simpl_pathnames = lh#path#strip_common(simpl_pathnames)
     let simpl_pathnames = [ '&Cancel' ] + simpl_pathnames
     " Consider guioptions+=c is case of difficulties with the gui
-    let selection = confirm(a:prompt, join(simpl_pathnames,"\n"), 1, 'Question')
+    try
+      let guioptions_save = &guioptions
+      set guioptions+=v
+      let selection = confirm(a:prompt, join(simpl_pathnames,"\n"), 1, 'Question')
+    finally
+      let &guioptions = guioptions_save
+    endtry
     let file = (selection == 1) ? '' : a:pathnames[selection-2]
     return file
   elseif len(a:pathnames) == 0
@@ -295,18 +359,20 @@ function! lh#path#strip_start(pathname, pathslist)
   " apply a realpath like operation
   let nb_paths = len(pathslist) " set before the loop
   let i = 0
-  while i != nb_paths
-    if pathslist[i] =~ '^\.\%(/\|$\)'
-      let path2 = getcwd().pathslist[i][1:]
-      call add(pathslist, path2)
-    endif
-    let i += 1
-  endwhile
+  " while i != nb_paths
+    " if pathslist[i] =~ '^\.\%(/\|$\)'
+      " let path2 = getcwd().pathslist[i][1:]
+      " call add(pathslist, path2)
+    " endif
+    " let i += 1
+  " endwhile
+  let pathslist_abs=filter(copy(pathslist), 'v:val =~ "^\\.\\%(/\\|$\\)"')
+  let pathslist += pathslist_abs
   " replace path separators by a regex that can match them
   call map(pathslist, 'substitute(v:val, "[\\\\/]", "[\\\\/]", "g")')
   " echomsg string(pathslist)
-  " escape .
-  call map(pathslist, '"^".escape(v:val, ".")')
+  " escape . and ~
+  call map(pathslist, '"^".escape(v:val, ".~")')
   " handle "**" as anything
   call map(pathslist, 'substitute(v:val, "\\*\\*", "\\\\%([^\\\\/]*[\\\\/]\\\\)*", "g")')
   " reverse the list to use the real best match, which is "after"
@@ -317,13 +383,15 @@ function! lh#path#strip_start(pathname, pathslist)
     " echomsg strip_re
     let best_match = substitute(a:pathname, '\%('.strip_re.'\)[/\\]\=', '', '')
   else
-    let best_match = ''
-    for path in pathslist
-      let a_match = substitute(a:pathname, '\%('.path.'\)[/\\]\=', '', '')
-      if len(a_match) < len(best_match) || empty(best_match)
-        let best_match = a_match
-      endif
-    endfor
+    if !empty(pathslist)
+      let best_match = substitute(a:pathname, '\%('.pathslist[0].'\)[/\\]\=', '', '')
+      for path in pathslist[1:]
+        let a_match = substitute(a:pathname, '\%('.path.'\)[/\\]\=', '', '')
+        if len(a_match) < len(best_match)
+          let best_match = a_match
+        endif
+      endfor
+    endif
   endif
   return best_match
 endfunction
@@ -352,12 +420,92 @@ endfunction
 
 " Function: lh#path#vimfiles() {{{3
 function! lh#path#vimfiles()
-  let expected_win = $HOME . '/vimfiles'
-  let expected_nix = $HOME . '/.vim'
+  let HOME = exists('$LUCHOME') ? $LUCHOME : $HOME
+  let expected_win = HOME . '/vimfiles'
+  let expected_nix = HOME . '/.vim'
   let what =  lh#path#to_regex($HOME.'/').'\(vimfiles\|.vim\)'
   " Comment what
   let z = lh#path#find(&rtp,what)
   return z
+endfunction
+
+" Function: lh#path#is_in(file, path) {{{3
+function! lh#path#is_in(file, path)
+  if stridx(a:file, a:path) == 0
+    return 1
+  else
+    " try to check with readlink
+    return stridx(lh#path#readlink(a:file), lh#path#readlink(a:path)) == 0
+  endif
+endfunction
+
+" Function: lh#path#readlink(pathname) {{{3
+let s:has_readlink = 0
+function! lh#path#readlink(pathname)
+  if s:has_readlink || executable('readlink')
+    let s:has_readlink = 1
+    return lh#os#system('readlink -f '.shellescape(a:pathname))
+  else
+    return a:pathname
+  endif
+endfunction
+
+" Function: lh#path#add_path_if_exists(listname, path) {{{3
+function! lh#path#add_path_if_exists(listname, path)
+  let path = substitute(a:path, '[/\\]\*\*$', '', '')
+  if isdirectory(path)
+    let {a:listname} += [a:path]
+  endif
+endfunction
+
+" Function: lh#path#find_in_parents(paths, kinds) {{{3
+function! lh#path#find_in_parents(path, path_patterns, kinds, last_valid_path)
+  if a:path =~ '^\(//\|\\\\\)$'
+    return []
+  endif
+  let path = fnamemodify(a:path, ':p')
+  if path[len(path)-1] == '/'
+    let path = path[:-2]
+  endif
+
+  let up_path = fnamemodify(path,':h')
+  if up_path == '.' " Likely a non existent path
+    if ! isdirectory(path)
+      call lh#common#warning_msg("The current file '".expand('%:p:')."' seems to be in a non-existent directory: '".path."'")
+    endif
+    let up_path = getcwd()
+  endif
+  " call confirm('crt='.path."\nup=".up_path."\n$HOME=".s:home, '&Ok', 1)
+  " echomsg ('crt='.path."\nup=".up_path."\n$HOME=".s:home)
+
+  " Recursive call: 
+  " - first check the parent directory
+  let res = []
+  if path !~ a:last_valid_path && path != up_path
+    " Terminal condition
+    let res += lh#path#find_in_parents(up_path, a:path_patterns, a:kinds, a:last_valid_path)
+  endif
+
+  " - then check the current path
+  let path_patterns = type(a:path_patterns) == type([]) ? a:path_patterns : [a:path_patterns]
+  for pattern in path_patterns
+    let tested_path = path.'/'.pattern
+    let smthg_found = 0
+    if a:kinds =~ '.*dir.*' && isdirectory(tested_path)
+      let res += [tested_path]
+      let smthg_found = 1
+      call s:Verbose('Check '.path.' ... '.pattern.' directory found!')
+    elseif a:kinds =~ '.*file.*' && filereadable(tested_path)
+      let res += [tested_path]
+      let smthg_found = 1
+      call s:Verbose('Check '.path.' ... '.pattern.' file found!')
+    endif
+  endfor
+  if smthg_found == 0
+    call s:Verbose('Check '.path.' for '.string(path_patterns).' ... none found!')
+  endif
+
+  return res
 endfunction
 " }}}1
 "=============================================================================

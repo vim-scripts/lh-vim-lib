@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: test-menu-map.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		tests/lh/test-menu-map.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,14 +7,14 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	05th Dec 2006
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 " Description:	Tests for lh-vim-lib . lh#menu#
 " 
 "------------------------------------------------------------------------
-" Installation:	Â«install detailsÂ»
-" History:	Â«historyÂ»
-" TODO:		Â«missing featuresÂ»
+" Installation:	«install details»
+" History:	«history»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 
@@ -29,7 +29,7 @@ call lh#menu#make("nic", '42.50.340',
       \ '<buffer>',
       \ ":echo 'TeXtags'<CR>")
 
-" With '{' expanding to '{}Ã—Ã—', or '{}' regarding the mode
+" With '{' expanding to '{}××', or '{}' regarding the mode
 call lh#menu#IVN_make('42.50.360.200',
       \ '&LH-Tests.&Menu-Make.&Insert.\toto{}', ']toto',
       \ '\\toto{',

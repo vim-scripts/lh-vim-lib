@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: command.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/command.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,7 +7,7 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	08th Jan 2007
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (08th Jan 2007)
+" Last Update:	$Date$ (08th Jan 2007)
 "------------------------------------------------------------------------
 " Description:	
 " 	Helpers to define commands that:
@@ -21,7 +21,7 @@
 " History:	
 "       v3.0.0: GPLv3
 " 	v2.0.0: Code moved from other plugins
-" TODO:		Â«missing featuresÂ»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 
@@ -147,7 +147,7 @@ function! s:BTW(command, ...)
   elseif 'removelocal'  == a:command | call s:RemoveFilter('b', a:1)
   elseif 'rebuild'      == a:command " wait for s:ReconstructToolsChain()
   elseif 'echo'         == a:command | exe "echo s:".a:1
-    " echo s:{a:f1} ## don't support Â«echo s:f('foo')Â»
+    " echo s:{a:f1} ## don't support «echo s:f('foo')»
   elseif 'reloadPlugin' == a:command
     let g:force_reload_BuildToolsWrapper = 1
     let g:BTW_BTW_in_use = 1

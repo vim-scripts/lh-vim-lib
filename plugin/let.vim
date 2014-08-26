@@ -1,13 +1,13 @@
 "=============================================================================
-" $Id: let.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:         plugin/let.vim                                    {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:      3.0.0
+" Version:      3.1.1
 " Created:      31st May 2010
-" Last Update:  $Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:  $Date$
 "------------------------------------------------------------------------
 " Description:
 "       Defines a command :LetIfUndef that sets a variable if undefined
@@ -19,6 +19,8 @@
 " History:      
 " 	v2.2.1: first version of this command into lh-vim-lib
 " 	v3.0.0: GPLv3
+" 	v3.0.1: :LetIfUndef works with dictionaries as well
+" 	        function moved to its own autoload plugin
 " TODO: 
 " }}}1
 "=============================================================================
@@ -36,19 +38,14 @@ set cpo&vim
 " Avoid global reinclusion }}}1
 "------------------------------------------------------------------------
 " Commands and Mappings {{{1
-command! -nargs=+ LetIfUndef call s:LetIfUndef(<f-args>)
+command! -nargs=+ LetIfUndef call lh#let#if_undef(<f-args>)
 " Commands and Mappings }}}1
 "------------------------------------------------------------------------
 " Functions {{{1
 " Note: most functions are best placed into
-" autoload/Â«your-initialsÂ»/Â«letÂ».vim
+" autoload/«your-initials»/«let».vim
 " Keep here only the functions are are required when the plugin is loaded,
 " like functions that help building a vim-menu for this plugin.
-function! s:LetIfUndef(var, value)
-  if !exists(a:var)
-    let {a:var} = eval(a:value)
-  endif
-endfunction
 
 " Functions }}}1
 "------------------------------------------------------------------------

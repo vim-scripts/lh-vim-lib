@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: test-Fargs2String.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		tests/lh/test-Fargs2String.vim                           {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,15 +7,15 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	16th Apr 2007
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 " Description:	Tests for lh-vim-lib . lh#command#Fargs2String
 " 
 "------------------------------------------------------------------------
 " Installation:	
-" 	Relies on the version Â«patched by myself|1?Â» of vim_units
-" History:	Â«historyÂ»
-" TODO:		Â«missing featuresÂ»
+" 	Relies on the version «patched by myself|1?» of vim_units
+" History:	«history»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 

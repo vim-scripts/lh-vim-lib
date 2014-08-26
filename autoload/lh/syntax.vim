@@ -1,21 +1,21 @@
 "=============================================================================
-" $Id: syntax.vim 558 2012-04-10 08:00:00Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/syntax.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:	3.1.0
+" Version:	3.1.18
 " Created:	05th Sep 2007
-" Last Update:	$Date: 2012-04-10 10:00:00 +0200 (mar 10 avr 2012) $ (05th Sep 2007)
+" Last Update:	$Date$ (05th Sep 2007)
 "------------------------------------------------------------------------
-" Description:	Â«descriptionÂ»
+" Description:	«description»
 " 
 "------------------------------------------------------------------------
 " Installation:
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
-" History:	Â«historyÂ»
+" History:	«history»
 " 	v1.0.0:
 " 		Creation ;
 " 		Functions moved from lhVimSpell
@@ -135,13 +135,23 @@ function! lh#syntax#list(name)
 endfunction
 
 " Function: lh#syntax#is_a_comment(mark) : bool                   {{{3
-function! lh#syntax#is_a_comment(mark)
-  let stack = synstack(line(a:mark), col(a:mark))
-  for syn in stack
-    if synIDattr(syn, 'name') =~? 'comment'
-      return 1
-    endif
-  endfor
+function! lh#syntax#is_a_comment(mark) abort
+  return lh#syntax#is_a_comment_at(line(a:mark), col(a:mark))
+endfunction
+
+
+" Function: lh#syntax#is_a_comment_at(l,c) : bool                  {{{3
+function! lh#syntax#is_a_comment_at(l,c) abort
+  try 
+    let stack = synstack(a:l, a:c)
+    for syn in stack
+      if synIDattr(syn, 'name') =~? 'comment'
+        return 1
+      endif
+    endfor
+  catch /.*/
+    throw "Cannot fetch synstack at line:".a:l.", col:".a:c
+  endtry
   return 0
 endfunction
 

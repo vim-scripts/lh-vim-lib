@@ -1,25 +1,18 @@
 "=============================================================================
 " $Id$
-" File:         autoload/lh/env.vim                               {{{1
+" File:         autoload/lh/ft.vim                                {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:      3.0.0
-" Created:      19th Jul 2010
+" Version:      3.1.17
+" Created:      28th Jan 2014
 " Last Update:  $Date$
 "------------------------------------------------------------------------
 " Description:
-"       Functions related to environment (variables)
+"       library functions related to filetype manipulations
 " 
 "------------------------------------------------------------------------
-" Installation:
-"       Drop this file into {rtp}/autoload/lh
-"       Requires Vim7+
-" History:      
-" 	v2.2.1: First Version
-"       v3.0.0: GPLv3
-" TODO:         «missing features»
 " }}}1
 "=============================================================================
 
@@ -28,14 +21,14 @@ set cpo&vim
 "------------------------------------------------------------------------
 " ## Misc Functions     {{{1
 " # Version {{{2
-let s:k_version = 300
-function! lh#env#version()
+let s:k_version = 3117
+function! lh#ft#version()
   return s:k_version
 endfunction
 
 " # Debug   {{{2
 let s:verbose = 0
-function! lh#env#verbose(...)
+function! lh#ft#verbose(...)
   if a:0 > 0 | let s:verbose = a:1 | endif
   return s:verbose
 endfunction
@@ -46,29 +39,19 @@ function! s:Verbose(expr)
   endif
 endfunction
 
-function! lh#env#debug(expr)
+function! lh#ft#debug(expr)
   return eval(a:expr)
 endfunction
 
 
 "------------------------------------------------------------------------
 " ## Exported functions {{{1
-function! lh#env#expand_all(string)
-  let res = ''
-  let tail = a:string
-  while !empty(tail)
-    let [ all, head, var, tail; dummy ] = matchlist(tail, '\(.\{-}\)\%(${\(.\{-}\)}\)\=\(.*\)')
-    if empty(var)
-      let res .= tail
-      break
-    else
-      let res .= head
-      let val = eval('$'.var)
-      let res .= val
-    endif
-  endwhile
-  return res
+" Function: lh#ft#is_text(...) {{{3
+function! lh#ft#is_text(...)
+  let ft = a:0 == 0 ? &ft : (a:1)
+  return ft =~ '^$\|text\|latex\|tex\|html\|docbk\|help\|mail\|man\|xhtml\|markdown'
 endfunction
+
 "------------------------------------------------------------------------
 " ## Internal functions {{{1
 

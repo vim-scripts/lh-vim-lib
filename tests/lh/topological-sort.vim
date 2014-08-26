@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: topological-sort.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:         tests/lh/topological-sort.vim                            {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "               <URL:http://code.google.com/p/lh-vim/>
@@ -7,14 +7,14 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:      3.0.0
 " Created:      17th Apr 2008
-" Last Update:  $Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:  $Date$
 "------------------------------------------------------------------------
-" Description:  Â«descriptionÂ»
+" Description:  «description»
 "
 "------------------------------------------------------------------------
-" Installation: Â«install detailsÂ»
-" History:      Â«historyÂ»
-" TODO:         Â«missing featuresÂ»
+" Installation: «install details»
+" History:      «history»
+" TODO:         «missing features»
 " }}}1
 "=============================================================================
 

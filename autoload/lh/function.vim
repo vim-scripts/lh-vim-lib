@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: function.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/function.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,7 +7,7 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	03rd Nov 2008
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 " Description:	
 " 	Implements:
@@ -23,7 +23,7 @@
 " History:	
 "       v2.2.0: first implementation
 "       v3.0.0: GPLv3
-" TODO:		Â«missing featuresÂ»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 
@@ -154,7 +154,14 @@ function! lh#function#execute(Fn, ...)
     return a:Fn.execute(a:000)
   else
     let expr = lh#function#prepare(a:Fn, a:000)
-    return eval(expr)
+    try 
+      return eval(expr)
+    catch /.*/
+      " Note: if you are experimenting a E16: invalid range, you may want to
+      " escape the '[' from the expression part as [z-a] is not a valid range,
+      " even if your text as nothing to do with a range
+      throw "Cannot execute the expression: ".expr ."\nWith a:000=".string(a:000)
+    endtry
   endif
 endfunction
 

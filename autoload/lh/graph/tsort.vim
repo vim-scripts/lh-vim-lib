@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: tsort.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/tsort.vim                        {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,14 +7,14 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	21st Apr 2008
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
 " Description:	Library functions for Topological Sort
 " 
 "------------------------------------------------------------------------
 " 	Drop the file into {rtp}/autoload/lh/graph
-" History:	Â«historyÂ»
-" TODO:		Â«missing featuresÂ»
+" History:	«history»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 

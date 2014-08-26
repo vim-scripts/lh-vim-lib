@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: dialog.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/buffer/dialog.vim                            {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,9 +7,9 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	21st Sep 2007
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
+" Last Update:	$Date$
 "------------------------------------------------------------------------
-" Description:	Â«descriptionÂ»
+" Description:	«description»
 " 
 "------------------------------------------------------------------------
 " Installation:	
@@ -139,6 +139,11 @@ function! s:Display(dialog, atitle)
     silent $put='  '.choice
   endfor
   set ro
+  " Resize to have all elements fit, up to max(15, winfixheight)
+  let nl = 15 > &winfixheight ? 15 : &winfixheight
+  let nl = line('$') < nl ? line('$') : nl
+  exe nl.' wincmd _'
+  normal! gg
   exe s:Help_NbL()+1
 endfunction
 

@@ -1,5 +1,5 @@
 "===========================================================================
-" $Id: menu-map.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		macros/menu-map.vim
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 " 		<URL:http://code.google.com/p/lh-vim/>
@@ -9,7 +9,7 @@
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
-" Last Update:  $Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (02nd Dec 2006)
+" Last Update:  $Date$ (02nd Dec 2006)
 "
 " Last Changes: {{{
 "       Version 3.0.0:

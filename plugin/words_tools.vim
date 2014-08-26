@@ -4,7 +4,7 @@
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:      3.0.0
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (19th Mar 2012)
+" Last Update:	$Date$ (19th Mar 2012)
 " Purpose:	Define functions better than expand("<cword>")
 "
 " Note:		They are expected to be used in insert mode (thanks to <c-r>

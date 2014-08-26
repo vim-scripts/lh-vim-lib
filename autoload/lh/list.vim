@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: list.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:         autoload/lh/list.vim                                      {{{1
 " Author:       Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "               <URL:http://code.google.com/p/lh-vim/>
@@ -7,7 +7,7 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:      3.0.0
 " Created:      17th Apr 2007
-" Last Update:  $Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (17th Apr 2007)
+" Last Update:  $Date$ (17th Apr 2007)
 "------------------------------------------------------------------------
 " Description:  
 "       Defines functions related to |Lists|
@@ -38,7 +38,7 @@
 "       (*) lh#list#Find_if() supports search predicate, and start index
 "       (*) lh#list#Match() supports start index
 "       v2.0.0:
-" TODO:         Â«missing featuresÂ»
+" TODO:         «missing features»
 " }}}1
 "=============================================================================
 
@@ -107,7 +107,7 @@ function! lh#list#copy_if(input, output, predicate)
     if lh#function#execute(a:predicate, element)
       call add(a:output, element)
     endif
-    unlet element " for heterogeneous lists
+    silent! unlet element " for heterogeneous lists
   endfor
   return a:output
 endfunction

@@ -1,13 +1,13 @@
 "=============================================================================
-" $Id: common.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/common.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:	3.0.0
+" Version:	3.1.17
 " Created:	07th Oct 2006
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (08th Feb 2008)
+" Last Update:	$Date$ (08th Feb 2008)
 "------------------------------------------------------------------------
 " Description:	
 " 	Some common functions for:
@@ -18,7 +18,12 @@
 " Installation:	
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
+" 	with ruby enabled for lh#common#rand()
 " History:	
+"       v3.1.17
+"       - Fix lh#common#echomsg_multilines() to accept lists
+"       v3.0.1
+"       - lh#common#rand
 "       v3.0.0
 "       - GPLv3
 " 	v2.1.1
@@ -39,7 +44,7 @@ set cpo&vim
 
 " Function: lh#common#echomsg_multilines {{{2
 function! lh#common#echomsg_multilines(text)
-  let lines = split(a:text, "[\n\r]")
+  let lines = type(a:text) == type([]) ? a:text : split(a:text, "[\n\r]")
   for line in lines
     echomsg line
   endfor
@@ -90,6 +95,15 @@ function! lh#common#CheckDeps(Symbol, File, path, plugin) " {{{3
   return lh#common#check_deps(a:Symbol, a:File, a:path, a:plugin)
 endfunction
 
+" Function: lh#common#rand(max) {{{3
+" This function requires ruby, and it may move to another autoload plugin
+function! lh#common#rand(max)
+    ruby << EOF
+    rmax = VIM::evaluate("a:max")
+    rmax = nil if rmax == ""
+    VIM::command("return #{rand(rmax).inspect}")
+EOF
+endfunction
 " Functions }}}1
 "------------------------------------------------------------------------
 let &cpo=s:cpo_save

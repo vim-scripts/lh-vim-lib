@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: askvim.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" $Id$
 " File:		autoload/lh/askvim.vim                                    {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,7 +7,7 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.0.0
 " Created:	17th Apr 2007
-" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (17th Apr 2007)
+" Last Update:	$Date$ (17th Apr 2007)
 "------------------------------------------------------------------------
 " Description:	
 " 	Defines functions that asks vim what it is relinquish to tell us
@@ -20,7 +20,7 @@
 " History:	
 " 	v2.0.0:
 " 	v3.0.0: GPLv3
-" TODO:		Â«missing featuresÂ»
+" TODO:		«missing features»
 " }}}1
 "=============================================================================
 
