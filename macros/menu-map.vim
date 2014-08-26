@@ -1,15 +1,19 @@
 "===========================================================================
-" $Id: menu-map.vim 101 2008-04-23 00:22:05Z luc.hermitte $
+" $Id: menu-map.vim 520 2012-03-19 18:09:15Z luc.hermitte $
 " File:		macros/menu-map.vim
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-" 		<URL:http://hermitte.free.fr/vim/>
+" 		<URL:http://code.google.com/p/lh-vim/>
 "
 " Purpose:	Define functions to build mappings and menus at the same time
 "
-" Version:	2.0.0
-" Last Update:  $Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $ (02nd Dec 2006)
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.0.0
+" Last Update:  $Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (02nd Dec 2006)
 "
 " Last Changes: {{{
+"       Version 3.0.0:
+"               GPLv3
 " 	Version 2.0.0:
 " 		Moved to vim7, 
 " 		Functions moved to {rtp}/autoload/
@@ -64,7 +68,7 @@ command! -nargs=+           NMAP     nmap       <args>
 command! -nargs=+           CMAP     cmap       <args>
 command! -nargs=+           VMAP     vmap       <args>
 command! -nargs=+           AMAP
-      \       call lh#menu#Map_all('amap', <f-args>)
+      \       call lh#menu#map_all('amap', <f-args>)
 
 command! -nargs=+ -bang  NOREMAP  noremap<bang> <args>
 command! -nargs=+       INOREMAP inoremap       <args>
@@ -72,7 +76,7 @@ command! -nargs=+       NNOREMAP nnoremap       <args>
 command! -nargs=+       CNOREMAP cnoremap       <args>
 command! -nargs=+       VNOREMAP vnoremap       <args>
 command! -nargs=+       ANOREMAP
-      \       call lh#menu#Map_all('anoremap', <f-args>)
+      \       call lh#menu#map_all('anoremap', <f-args>)
 " }}}
 
 " End !

@@ -1,11 +1,13 @@
 "=============================================================================
-" $Id: tsort.vim 101 2008-04-23 00:22:05Z luc.hermitte $
-" File:		tsort.vim                                           {{{1
+" $Id: tsort.vim 520 2012-03-19 18:09:15Z luc.hermitte $
+" File:		autoload/lh/tsort.vim                        {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.1.0
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.0.0
 " Created:	21st Apr 2008
-" Last Update:	$Date: 2008-04-23 02:22:05 +0200 (mer., 23 avr. 2008) $
+" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $
 "------------------------------------------------------------------------
 " Description:	Library functions for Topological Sort
 " 
@@ -18,6 +20,23 @@
 
 let s:cpo_save=&cpo
 set cpo&vim
+
+"------------------------------------------------------------------------
+" ## Debug {{{1
+function! lh#graph#tsort#verbose(level)
+  let s:verbose = a:level
+endfunction
+
+function! s:Verbose(expr)
+  if exists('s:verbose') && s:verbose
+    echomsg a:expr
+  endif
+endfunction
+
+function! lh#graph#tsort#debug(expr)
+  return eval(a:expr)
+endfunction
+
 "------------------------------------------------------------------------
 "## Helper functions                         {{{1
 "# s:Successors_fully_defined(node)          {{{2
