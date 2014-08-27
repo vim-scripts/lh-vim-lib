@@ -1,11 +1,13 @@
-"============================================================================= "=============================================================================
-" $Id: event.vim 36 2008-02-19 02:09:28Z luc.hermitte $
-" File:		event.vim                                           {{{1
+"=============================================================================
+" $Id: event.vim 699 2013-03-01 20:03:01Z luc.hermitte@gmail.com $
+" File:		autoload/lh/event.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.0.6
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.1.8
 " Created:	15th Feb 2008
-" Last Update:	$Date: 2008-02-19 03:09:28 +0100 (mar., 19 fÃ©vr. 2008) $
+" Last Update:	$Date: 2013-03-01 21:03:01 +0100 (ven. 01 mars 2013) $
 "------------------------------------------------------------------------
 " Description:	
 " 	Function to help manage vim |autocommand-events|
@@ -15,30 +17,59 @@
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
 " History:
-" 	v2.0.6:
-" 		Creation
+" 	v2.0.6: Creation
+"       v3.0.0: GPLv3
 " TODO:		
 " }}}1
 "=============================================================================
 
 let s:cpo_save=&cpo
 set cpo&vim
+
 "------------------------------------------------------------------------
+" ## Functions {{{1
+" # Debug {{{2
+function! lh#event#verbose(level)
+  let s:verbose = a:level
+endfunction
+
+function! s:Verbose(expr)
+  if exists('s:verbose') && s:verbose
+    echomsg a:expr
+  endif
+endfunction
+
+function! lh#event#debug(expr)
+  return eval(a:expr)
+endfunction
+
+"------------------------------------------------------------------------
+" # Event Registration {{{2
 function! s:RegisteredOnce(cmd, group)
   " We can't delete the current augroup autocommand => increment a counter
   if !exists('s:'.a:group) || s:{a:group} == 0 
     let s:{a:group} = 1
-    exe a:cmd
+    try 
+      exe a:cmd
+    finally
+      " But we can clean the group
+      exe 'augroup '.a:group
+      au!
+      augroup END
+    endtry
   endif
 endfunction
 
-function! lh#event#RegisterForOneExecutionAt(event, cmd, group)
+function! lh#event#register_for_one_execution_at(event, cmd, group)
   let group = a:group.'_once'
   let s:{group} = 0
   exe 'augroup '.group
   au!
   exe 'au '.a:event.' '.expand('%:p').' call s:RegisteredOnce('.string(a:cmd).','.string(group).')'
   augroup END
+endfunction
+function! lh#event#RegisterForOneExecutionAt(event, cmd, group)
+  return lh#event#register_for_one_execution_at(a:event, a:cmd, a:group)
 endfunction
 "------------------------------------------------------------------------
 let &cpo=s:cpo_save

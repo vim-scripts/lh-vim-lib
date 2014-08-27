@@ -1,11 +1,13 @@
 "=============================================================================
-" $Id: syntax.vim 12 2008-02-14 00:06:48Z luc.hermitte $
-" File:		syntax.vim                                           {{{1
+" $Id: syntax.vim 827 2014-05-01 10:45:35Z luc.hermitte $
+" File:		autoload/lh/syntax.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.0.5
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.1.18
 " Created:	05th Sep 2007
-" Last Update:	$Date: 2008-02-14 01:06:48 +0100 (jeu., 14 fÃ©vr. 2008) $ (05th Sep 2007)
+" Last Update:	$Date: 2014-05-01 12:45:35 +0200 (jeu. 01 mai 2014) $ (05th Sep 2007)
 "------------------------------------------------------------------------
 " Description:	«description»
 " 
@@ -17,6 +19,8 @@
 " 	v1.0.0:
 " 		Creation ;
 " 		Functions moved from lhVimSpell
+"       v3.0.0: GPLv3
+"       v3.1.0: lh#syntax#is_a_comment()
 " TODO:
 " 	function, to inject "contained", see lhVimSpell approach
 " }}}1
@@ -24,45 +28,76 @@
 
 
 "=============================================================================
-" Avoid global reinclusion {{{1
 let s:cpo_save=&cpo
 set cpo&vim
-" Avoid global reinclusion }}}1
 "------------------------------------------------------------------------
-" Functions {{{1
+" ## Functions {{{1
+" # Debug {{{2
+function! lh#syntax#verbose(level)
+  let s:verbose = a:level
+endfunction
 
-" Functions: Show name of the syntax kind of a character {{{2
-function! lh#syntax#NameAt(l,c, ...)
+function! s:Verbose(expr)
+  if exists('s:verbose') && s:verbose
+    echomsg a:expr
+  endif
+endfunction
+
+function! lh#syntax#debug(expr)
+  return eval(a:expr)
+endfunction
+
+" # Public {{{2
+" Functions: Show name of the syntax kind of a character {{{3
+function! lh#syntax#name_at(l,c, ...)
   let what = a:0 > 0 ? a:1 : 0
   return synIDattr(synID(a:l, a:c, what),'name')
 endfunction
-
-function! lh#syntax#NameAtMark(mark, ...)
+function! lh#syntax#NameAt(l,c, ...)
   let what = a:0 > 0 ? a:1 : 0
-  return lh#syntax#NameAt(line(a:mark), col(a:mark), what)
+  return lh#syntax#name_at(a:l, a:c, what)
 endfunction
 
-" Functions: skip string, comment, character, doxygen {{{2
+function! lh#syntax#name_at_mark(mark, ...)
+  let what = a:0 > 0 ? a:1 : 0
+  return lh#syntax#name_at(line(a:mark), col(a:mark), what)
+endfunction
+function! lh#syntax#NameAtMark(mark, ...)
+  let what = a:0 > 0 ? a:1 : 0
+  return lh#syntax#name_at_mark(a:mark, what)
+endfunction
+
+" Functions: skip string, comment, character, doxygen {{{3
+func! lh#syntax#skip_at(l,c)
+  return lh#syntax#name_at(a:l,a:c) =~? 'string\|comment\|character\|doxygen'
+endfun
 func! lh#syntax#SkipAt(l,c)
-  return lh#syntax#NameAt(a:l,a:c) =~? 'string\|comment\|character\|doxygen'
+  return lh#syntax#skip_at(a:l,a:c)
 endfun
 
+func! lh#syntax#skip()
+  return lh#syntax#skip_at(line('.'), col('.'))
+endfun
 func! lh#syntax#Skip()
-  return lh#syntax#SkipAt(line('.'), col('.'))
+  return lh#syntax#skip()
 endfun
 
+func! lh#syntax#skip_at_mark(mark)
+  return lh#syntax#skip_at(line(a:mark), col(a:mark))
+endfun
 func! lh#syntax#SkipAtMark(mark)
-  return lh#syntax#SkipAt(line(a:mark), col(a:mark))
+  return lh#syntax#skip_at_mark(a:mark)
 endfun
 
-" Function: Show current syntax kind {{{2
-command! SynShow echo 'hi<'.lh#syntax#NameAtMark('.',1).'> trans<'
-      \ lh#syntax#NameAtMark('.',0).'> lo<'.
-      \ synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>'
+" Command: :SynShow Show current syntax kind                      {{{3
+command! SynShow echo 'hi<'.lh#syntax#name_at_mark('.',1).'> trans<'
+      \ lh#syntax#name_at_mark('.',0).'> lo<'.
+      \ synIDattr(synIDtrans(synID(line('.'), col('.'), 1)), 'name').'>   ## '
+      \ lh#list#transform(synstack(line("."), col(".")), [], 'synIDattr(v:1_, "name")')
 
 
-" Function: lh#syntax#SynListRaw(name) : string                     {{{2
-function! lh#syntax#SynListRaw(name)
+" Function: lh#syntax#list_raw(name) : string                     {{{3
+function! lh#syntax#list_raw(name)
   let a_save = @a
   try
     redir @a
@@ -75,8 +110,9 @@ function! lh#syntax#SynListRaw(name)
   return res
 endfunction
 
-function! lh#syntax#SynList(name)
-  let raw = lh#syntax#SynListRaw(a:name)
+" Function: lh#syntax#list(name) : List                           {{{3
+function! lh#syntax#list(name)
+  let raw = lh#syntax#list_raw(a:name)
   let res = [] 
   let lines = split(raw, '\n')
   let started = 0
@@ -98,6 +134,26 @@ function! lh#syntax#SynList(name)
   return res
 endfunction
 
+" Function: lh#syntax#is_a_comment(mark) : bool                   {{{3
+function! lh#syntax#is_a_comment(mark) abort
+  return lh#syntax#is_a_comment_at(line(a:mark), col(a:mark))
+endfunction
+
+
+" Function: lh#syntax#is_a_comment_at(l,c) : bool                  {{{3
+function! lh#syntax#is_a_comment_at(l,c) abort
+  try 
+    let stack = synstack(a:l, a:c)
+    for syn in stack
+      if synIDattr(syn, 'name') =~? 'comment'
+        return 1
+      endif
+    endfor
+  catch /.*/
+    throw "Cannot fetch synstack at line:".a:l.", col:".a:c
+  endtry
+  return 0
+endfunction
 
 
 " Functions }}}1

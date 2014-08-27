@@ -1,4 +1,4 @@
-" $Id: test-command.vim 101 2008-04-23 00:22:05Z luc.hermitte $
+" $Id: test-command.vim 156 2010-05-07 00:54:36Z luc.hermitte $
 " Tests for lh-vim-lib . lh#command
 
 " FindFilter(filter):                            Helper {{{3
@@ -61,9 +61,9 @@ let TBTWcommand = {
       \     ]
       \ }
 
-call lh#command#New(TBTWcommand)
+call lh#command#new(TBTWcommand)
 
-nnoremap µ :call lh#command#New(TBTWcommand)<cr>
+nnoremap µ :call lh#command#new(TBTWcommand)<cr>
 
 "=============================================================================
 " vim600: set fdm=marker:

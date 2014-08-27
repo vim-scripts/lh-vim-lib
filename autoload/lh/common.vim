@@ -1,11 +1,13 @@
 "=============================================================================
-" $Id: common.vim 10 2008-02-14 00:02:10Z luc.hermitte $
-" File:		common.vim                                           {{{1
+" $Id: common.vim 805 2014-04-14 16:08:13Z luc.hermitte@gmail.com $
+" File:		autoload/lh/common.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
-"		<URL:http://hermitte.free.fr/vim/>
-" Version:	2.0.5
+"		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:	3.1.17
 " Created:	07th Oct 2006
-" Last Update:	$Date: 2008-02-14 01:02:10 +0100 (jeu., 14 fÃ©vr. 2008) $ (08th Feb 2008)
+" Last Update:	$Date: 2014-04-14 18:08:13 +0200 (lun. 14 avril 2014) $ (08th Feb 2008)
 "------------------------------------------------------------------------
 " Description:	
 " 	Some common functions for:
@@ -16,9 +18,20 @@
 " Installation:	
 " 	Drop it into {rtp}/autoload/lh/
 " 	Vim 7+ required.
+" 	with ruby enabled for lh#common#rand()
 " History:	
+"       v3.1.17
+"       - Fix lh#common#echomsg_multilines() to accept lists
+"       v3.0.1
+"       - lh#common#rand
+"       v3.0.0
+"       - GPLv3
+" 	v2.1.1
+" 	- New function: lh#common#echomsg_multilines()
+" 	- lh#common#warning_msg() supports multilines messages
+"
 " 	v2.0.0:
-" 		Code move from other plugins
+" 	- Code moved from other plugins
 " }}}1
 "=============================================================================
 
@@ -29,8 +42,19 @@ set cpo&vim
 "------------------------------------------------------------------------
 " Functions {{{1
 
-" Function: lh#common#ErrorMsg {{{2
-function! lh#common#ErrorMsg(text)
+" Function: lh#common#echomsg_multilines {{{2
+function! lh#common#echomsg_multilines(text)
+  let lines = type(a:text) == type([]) ? a:text : split(a:text, "[\n\r]")
+  for line in lines
+    echomsg line
+  endfor
+endfunction
+function! lh#common#echomsgMultilines(text)
+  return lh#common#echomsg_multilines(a:text)
+endfunction
+
+" Function: lh#common#error_msg {{{2
+function! lh#common#error_msg(text)
   if has('gui_running')
     call confirm(a:text, '&Ok', '1', 'Error')
   else
@@ -39,25 +63,47 @@ function! lh#common#ErrorMsg(text)
     " echohl None
   endif
 endfunction 
+function! lh#common#ErrorMsg(text)
+  return lh#common#error_msg(a:text)
+endfunction
 
-" Function: lh#common#WarningMsg {{{2
-function! lh#common#WarningMsg(text)
+" Function: lh#common#warning_msg {{{2
+function! lh#common#warning_msg(text)
   echohl WarningMsg
-  echomsg a:text
+  " echomsg a:text
+  call lh#common#echomsg_multilines(a:text)
   echohl None
 endfunction 
+function! lh#common#WarningMsg(text)
+  return lh#common#warning_msg(a:text)
+endfunction
 
 " Dependencies {{{2
-function! lh#common#CheckDeps(Symbol, File, path, plugin) " {{{3
+function! lh#common#check_deps(Symbol, File, path, plugin) " {{{3
   if !exists(a:Symbol)
     exe "runtime ".a:path.a:File
     if !exists(a:Symbol)
-      call lh#common#ErrorMsg( a:plugin.': Requires <'.a:File.'>')
+      call lh#common#error_msg( a:plugin.': Requires <'.a:File.'>')
       return 0
     endif
   endif
   return 1
-endfunction " }}}4
+endfunction
+
+function! lh#common#CheckDeps(Symbol, File, path, plugin) " {{{3
+  echomsg "lh#common#CheckDeps() is deprecated, use lh#common#check_deps() instead."
+  return lh#common#check_deps(a:Symbol, a:File, a:path, a:plugin)
+endfunction
+
+" Function: lh#common#rand(max) {{{3
+" This function requires ruby, and it may move to another autoload plugin
+function! lh#common#rand(max)
+    ruby << EOF
+    rmax = VIM::evaluate("a:max")
+    rmax = nil if rmax == ""
+    VIM::command("return #{rand(rmax).inspect}")
+EOF
+endfunction
 " Functions }}}1
 "------------------------------------------------------------------------
 let &cpo=s:cpo_save

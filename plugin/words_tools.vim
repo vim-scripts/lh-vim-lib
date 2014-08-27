@@ -1,9 +1,10 @@
-" File:		words_tools.vim
+" File:		plugin/words_tools.vim
 " Author:	Luc Hermitte <hermitte {at} free {dot} fr>
-" 		<URL:http://hermitte.free.fr/vim>
-" URL: http://hermitte.free.fr/vim/ressources/vim_dollar/plugin/words_tools.vim
-"
-" Last Update:	14th nov 2002
+" 		<URL:http://code.google.com/p/lh-vim/>
+" License:      GPLv3 with exceptions
+"               <URL:http://code.google.com/p/lh-vim/wiki/License>
+" Version:      3.0.0
+" Last Update:	$Date: 2012-03-19 19:09:15 +0100 (Mon, 19 Mar 2012) $ (19th Mar 2012)
 " Purpose:	Define functions better than expand("<cword>")
 "
 " Note:		They are expected to be used in insert mode (thanks to <c-r>
