@@ -1,14 +1,14 @@
 "=============================================================================
-" $Id: mk-lh-vim-lib.vim 851 2014-07-24 16:40:32Z luc.hermitte@gmail.com $
+" $Id: mk-lh-vim-lib.vim 870 2014-09-12 09:17:18Z luc.hermitte $
 " File:		mkVba/mk-lh-lib.vim
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:	3.2.1
-let s:version = '3.2.1'
+" Version:	3.2.2
+let s:version = '3.2.2'
 " Created:	06th Nov 2007
-" Last Update:	$Date: 2014-07-24 18:40:32 +0200 (jeu. 24 juil. 2014) $
+" Last Update:	$Date: 2014-09-12 11:17:18 +0200 (ven. 12 sept. 2014) $
 "------------------------------------------------------------------------
 cd <sfile>:p:h
 try 
