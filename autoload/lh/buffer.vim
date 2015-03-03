@@ -1,12 +1,12 @@
 "=============================================================================
-" $Id: buffer.vim 771 2014-01-08 18:34:27Z luc.hermitte@gmail.com $
+" $Id: buffer.vim 911 2015-01-16 11:16:06Z luc.hermitte@gmail.com $
 " File:		autoload/lh/buffer.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " Licence:      GPLv3
 " Version:	3.1.15
 " Created:	23rd Jan 2007
-" Last Update:	$Date: 2014-01-08 19:34:27 +0100 (mer. 08 janv. 2014) $
+" Last Update:	$Date: 2015-01-16 12:16:06 +0100 (ven. 16 janv. 2015) $
 "------------------------------------------------------------------------
 " Description:	
 " 	Defines functions that help finding windows and handling buffers.
@@ -110,7 +110,7 @@ endfunction
 function! lh#buffer#get_nr(bname)
   let nr = bufnr(a:bname)
   " nr may not always be -1 as it should => also test bname()
-  if -1 == nr " || bufname(nr) != a:bname
+  if -1 == nr  || bufname(nr) != a:bname
     exe 'sp '.fnameescape(a:bname)
     let nr = bufnr(a:bname)
     q

@@ -1,5 +1,5 @@
 "=============================================================================
-" $Id: menu.vim 688 2013-01-23 18:13:58Z luc.hermitte@gmail.com $
+" $Id: menu.vim 899 2014-11-28 16:21:51Z luc.hermitte@gmail.com $
 " File:		autoload/lh/menu.vim                               {{{1
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
@@ -7,7 +7,7 @@
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
 " Version:	3.1.5
 " Created:	13th Oct 2006
-" Last Update:	$Date: 2013-01-23 19:13:58 +0100 (mer. 23 janv. 2013) $ (07th Dec 2010)
+" Last Update:	$Date: 2014-11-28 17:21:51 +0100 (ven. 28 nov. 2014) $ (07th Dec 2010)
 "------------------------------------------------------------------------
 " Description:	
 " 	Defines the global function lh#menu#def_menu
@@ -35,6 +35,9 @@
 " 	instead ? May be a banged :Toggle! could work on the real variable
 " 	name, and on the real value.
 " 	* show all possible values in a sub menu (on demand)
+"
+" Notes:
+" .hook cannot be used to execute a toggle action. Use .actions instead.
 " }}}1
 "=============================================================================
 

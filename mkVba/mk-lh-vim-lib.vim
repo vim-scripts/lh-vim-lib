@@ -1,17 +1,17 @@
 "=============================================================================
-" $Id: mk-lh-vim-lib.vim 870 2014-09-12 09:17:18Z luc.hermitte $
+" $Id: mk-lh-vim-lib.vim 911 2015-01-16 11:16:06Z luc.hermitte@gmail.com $
 " File:		mkVba/mk-lh-lib.vim
 " Author:	Luc Hermitte <EMAIL:hermitte {at} free {dot} fr>
 "		<URL:http://code.google.com/p/lh-vim/>
 " License:      GPLv3 with exceptions
 "               <URL:http://code.google.com/p/lh-vim/wiki/License>
-" Version:	3.2.2
-let s:version = '3.2.2'
+" Version:	3.2.5
+let s:version = '3.2.5'
 " Created:	06th Nov 2007
-" Last Update:	$Date: 2014-09-12 11:17:18 +0200 (ven. 12 sept. 2014) $
+" Last Update:	$Date: 2015-01-16 12:16:06 +0100 (ven. 16 janv. 2015) $
 "------------------------------------------------------------------------
 cd <sfile>:p:h
-try 
+try
   let save_rtp = &rtp
   let &rtp = expand('<sfile>:p:h:h').','.&rtp
   exe '24,$MkVimball! lh-vim-lib-'.s:version
@@ -37,15 +37,16 @@ autoload/lh/let.vim
 autoload/lh/list.vim
 autoload/lh/map.vim
 autoload/lh/menu.vim
+autoload/lh/on.vim
 autoload/lh/option.vim
 autoload/lh/path.vim
 autoload/lh/position.vim
+autoload/lh/stack.vim
 autoload/lh/syntax.vim
 autoload/lh/visual.vim
 doc/lh-vim-lib.txt
 lh-vim-lib-addon-info.txt
 lh-vim-lib.README
-macros/menu-map.vim
 mkVba/mk-lh-vim-lib.vim
 plugin/let.vim
 plugin/lhvl.vim
